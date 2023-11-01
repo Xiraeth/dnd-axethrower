@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Axethrower Damage</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <img
+      src="dungeons-and-dragons-phone-har2t0i5h6s9tei6.jpg"
+      alt="Dungeons and Dragons"
+    />
+    <div class="restButtons">
+      <button class="rest" id="longRest">Long Rest</button>
+      <button class="rest" id="shortRest">Short Rest</button>
+    </div>
+    <div class="stats">
+      <div class="ac">AC: <span>14</span></div>
+    </div>
+    <div class="hitpoints" style="margin-bottom: 5px">
+      <p>Maximum Hitpoints:</p>
+      <span contenteditable="true">146</span>
+    </div>
+    <div class="hitpoints">
+      <p>Current Hitpoints:</p>
+      <span contenteditable="true">146</span>
+    </div>
+    <form>
+      <label for="takeDamage">Take Damage:</label
+      ><input type="text" id="takeDamage" autocomplete="off" />
+      <input type="submit" value="Submit" />
+    </form>
+
+    <div class="attackContainer">
+      <button id="berserk">Berserk</button>
+      <button id="attackBtn">Attack</button>
+    </div>
+
+    <div class="extraAttacks">
+      <p>You currently have: 0 extra attacks</p>
+    </div>
+  </body>
+</html>
