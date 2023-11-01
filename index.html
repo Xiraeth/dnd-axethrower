@@ -17,15 +17,19 @@
       <button class="rest" id="shortRest">Short Rest</button>
     </div>
     <div class="stats">
-      <div class="ac">AC: <span>14</span></div>
+      <div class="ac">AC: <span>15</span></div>
     </div>
-    <div class="hitpoints" style="margin-bottom: 5px">
+    <div class="hitpoints maximumHP" style="margin-bottom: 5px">
       <p>Maximum Hitpoints:</p>
       <span contenteditable="true">146</span>
     </div>
-    <div class="hitpoints">
+    <div class="hitpoints currentHP">
       <p>Current Hitpoints:</p>
       <span contenteditable="true">146</span>
+    </div>
+    <div class="hitpoints tempHP" style="margin-top: 5px">
+      <p>Temporary Hitpoints:</p>
+      <span contenteditable="true">0</span>
     </div>
     <form>
       <label for="takeDamage">Take Damage:</label
@@ -40,6 +44,14 @@
 
     <div class="extraAttacks">
       <p>You currently have: 0 extra attacks</p>
+    </div>
+
+    <div class="amaniRageContainer">
+      <button class="amaniRage">Amani Rage</button>
+    </div>
+
+    <div class="endTurnContainer">
+      <button class="endTurn">End Turn</button>
     </div>
   </body>
 </html>

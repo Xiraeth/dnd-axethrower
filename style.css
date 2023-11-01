@@ -117,6 +117,13 @@ input:not([type="submit"]) {
   padding: 2px 5px;
 }
 
+#takeDamage {
+  width: 80px;
+  padding: 2px 0px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
 input[type="submit"] {
   font-family: var(--font-1);
   border-radius: 5px;
@@ -155,4 +162,28 @@ input[type="submit"] {
   margin-top: 20px;
   text-align: center;
   font-style: italic;
+}
+
+.amaniRageContainer,
+.endTurnContainer {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.amaniRageContainer button,
+.endTurnContainer button {
+  font-size: 1.2rem;
+  color: crimson;
+  background: #000;
+  outline: none;
+  border: 1px solid crimson;
+  border-radius: 5px;
+  padding: 5px 15px;
+  transition: all 0.15s;
+}
+
+.amaniRageContainer button:active,
+.endTurnContainer button:active {
+  color: black;
+  background: crimson;
 }
