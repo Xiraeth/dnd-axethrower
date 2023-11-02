@@ -13,6 +13,11 @@ const extraAttacksHTML = document.querySelector(".extraAttacks i");
 const amaniRageButton = document.querySelector(".amaniRage");
 const amaniRegenSpanEl = document.querySelector(".amaniRegenHP span");
 const remainingHealTicks = document.querySelector(".remainingHealTicks");
+const addBerserkBtn = document.querySelector("#berserk");
+const removeBerserkBtn = document.querySelector("#removeBerserk");
+const berserkAttacksElement = document.querySelector(".berserkinContainer div");
+// variable to keep track of how much beneath 1hp 'berserkin' took me
+let revertHp = 0;
 
 // localStorage.clear();
 
@@ -73,6 +78,25 @@ amaniRageButton.addEventListener("click", function (e) {
 
 amaniRegenSpanEl.addEventListener("input", (e) => {
   localStorage.setItem("amaniRegen", Number(amaniRegenSpanEl.textContent));
+});
+
+addBerserkBtn.addEventListener("click", function (e) {
+  if (berserkAttacksElement.textContent == 2) return;
+
+  berserkAttacksElement.textContent++;
+
+  currentHP.textContent = Number(currentHP.textContent) - 18;
+  if (currentHP.textContent <= 0) {
+    currentHP.textContent = 1;
+  }
+});
+
+removeBerserkBtn.addEventListener("click", function (e) {
+  if (berserkAttacksElement.textContent == 0) return;
+
+  berserkAttacksElement.textContent--;
+
+  currentHP.textContent = Number(currentHP.textContent) + 18;
 });
 
 window.addEventListener("load", () => {
