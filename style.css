@@ -126,10 +126,20 @@ input:not([type="submit"]) {
 
 input[type="submit"] {
   font-family: var(--font-1);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: crimson;
+  background: black;
+  border: 1px solid crimson;
   border-radius: 5px;
-  padding: 2px 10px;
+  padding: 2px 20px;
   outline: none;
+  transition: all 0.05s;
+}
+
+input[type="submit"]:active {
   color: black;
+  background: crimson;
 }
 
 .berserkinContainer {
