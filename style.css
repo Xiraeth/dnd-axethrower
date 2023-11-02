@@ -231,6 +231,15 @@ input[type="submit"]:active {
   border-radius: 5px;
   background: var(--bg);
   padding: 5px 10px;
+  position: relative;
+}
+
+.remainingHealTicks {
+  font-size: 1.1rem;
+  position: absolute;
+  color: mediumspringgreen;
+  right: -8px;
+  top: -12px;
 }
 
 .endTurnContainer {
