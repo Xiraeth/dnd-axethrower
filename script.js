@@ -1,5 +1,8 @@
 "use strict";
 
+const longRestBtn = document.querySelector("#longRest");
+const shortRestBtn = document.querySelector("#shortRest");
+
 const AC = document.querySelector(".ac span");
 const maxHP = document.querySelector(".maximumHP span");
 const currentHP = document.querySelector(".currentHP span");
@@ -9,8 +12,20 @@ const takeDmgSubmit = document.querySelector('form input[type="submit"]');
 const extraAttacksHTML = document.querySelector(".extraAttacks i");
 const amaniRageButton = document.querySelector(".amaniRage");
 const amaniRegenSpanEl = document.querySelector(".amaniRegenHP span");
+const remainingHealTicks = document.querySelector(".remainingHealTicks");
 
 // localStorage.clear();
+
+longRestBtn.addEventListener("click", function (e) {
+  localStorage.setItem("extraAttacks", 0);
+  localStorage.setItem("amaniRegen", 0);
+  localStorage.setItem("currentHP", maxHP.textContent);
+  localStorage.setItem("remainingHealTicks", 0);
+
+  currentHP.textContent = localStorage.getItem("currentHP");
+  amaniRegenSpanEl.textContent = localStorage.getItem("amaniRegen");
+  remainingHealTicks.textContent = localStorage.getItem("remainingHealTicks");
+});
 
 maxHP.addEventListener("input", () => {
   localStorage.setItem("maxHP", Number(maxHP.textContent));
@@ -51,6 +66,9 @@ amaniRageButton.addEventListener("click", function (e) {
   const newHP = hp - hpLost;
   currentHP.textContent = newHP;
   localStorage.setItem("currentHP", newHP);
+
+  remainingHealTicks.textContent = 4;
+  localStorage.setItem("remainingHealTicks", remainingHealTicks.textContent);
 });
 
 amaniRegenSpanEl.addEventListener("input", (e) => {
@@ -62,6 +80,7 @@ window.addEventListener("load", () => {
   maxHP.textContent = localStorage.getItem("maxHP");
   currentHP.textContent = localStorage.getItem("currentHP");
   amaniRegenSpanEl.textContent = localStorage.getItem("amaniRegen");
+  remainingHealTicks.textContent = localStorage.getItem("remainingHealTicks");
 
   checkForExtraAttacks();
   extraAttacksHTML.textContent = localStorage.getItem("extraAttacks");
