@@ -87,7 +87,9 @@ addBerserkBtn.addEventListener("click", function (e) {
 
   currentHP.textContent = Number(currentHP.textContent) - 18;
   if (currentHP.textContent <= 0) {
-    currentHP.textContent = 1;
+    revertHp = 18 - Number(currentHP.textContent);
+    // TODO: IMPLEMENT 'REMOVING BERSERKIN' STACKS
+    // currentHP.textContent =
   }
 });
 
