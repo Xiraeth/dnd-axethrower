@@ -17,15 +17,15 @@
       <button class="rest" id="shortRest">Short Rest</button>
     </div>
     <div class="stats">
-      <div class="ac">AC: <span>15</span></div>
+      <div class="ac">AC: <span>19</span></div>
     </div>
     <div class="hitpoints maximumHP" style="margin-bottom: 5px">
       <p>Maximum Hitpoints:</p>
-      <span contenteditable="true">146</span>
+      <span contenteditable="true">126</span>
     </div>
     <div class="hitpoints currentHP">
       <p>Current Hitpoints:</p>
-      <span contenteditable="true">146</span>
+      <span contenteditable="true">126</span>
     </div>
     <div class="hitpoints tempHP" style="margin-top: 5px">
       <p>Temporary Hitpoints:</p>
@@ -33,14 +33,9 @@
     </div>
     <form>
       <label for="takeDamage">Take Damage:</label
-      ><input type="text" id="takeDamage" autocomplete="off" />
+      ><input type="number" id="takeDamage" autocomplete="off" />
       <input type="submit" value="Submit" />
     </form>
-
-    <div class="attackContainer">
-      <button id="berserk">Berserk</button>
-      <button id="attackBtn">Attack</button>
-    </div>
 
     <div class="extraAttacks">
       <p>You currently have: 0 extra attacks</p>
@@ -48,6 +43,17 @@
 
     <div class="amaniRageContainer">
       <button class="amaniRage">Amani Rage</button>
+      <div class="amaniRegenHP">RegenHP: <span>0</span></div>
+    </div>
+
+    <div class="berserkinContainer">
+      <button id="berserk">+Berserk</button>
+      <button id="removeBerserk">-Berserk</button>
+      <div>0</div>
+    </div>
+
+    <div class="attackContainer">
+      <button id="attackBtn">Attack</button>
     </div>
 
     <div class="endTurnContainer">
