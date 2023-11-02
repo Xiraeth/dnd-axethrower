@@ -18,6 +18,8 @@ const removeBerserkBtn = document.querySelector("#removeBerserk");
 const berserkAttacksElement = document.querySelector(".berserkinContainer div");
 // variable to keep track of how much beneath 1hp 'berserkin' took me
 let revertHp = 0;
+let hpOverflow = false;
+let isRaging = false;
 
 // localStorage.clear();
 
@@ -26,10 +28,20 @@ longRestBtn.addEventListener("click", function (e) {
   localStorage.setItem("amaniRegen", 0);
   localStorage.setItem("currentHP", maxHP.textContent);
   localStorage.setItem("remainingHealTicks", 0);
+  localStorage.setItem("isRaging", false);
+  localStorage.setItem("AC", 19);
 
+  isRaging = false;
+  hpOverflow = false;
+  revertHp = 0;
+  berserkAttacksElement.textContent = 0;
+  remainingHealTicks.textContent = 0;
+  AC.textContent = localStorage.getItem("AC");
   currentHP.textContent = localStorage.getItem("currentHP");
   amaniRegenSpanEl.textContent = localStorage.getItem("amaniRegen");
   remainingHealTicks.textContent = localStorage.getItem("remainingHealTicks");
+
+  checkForExtraAttacks();
 });
 
 maxHP.addEventListener("input", () => {
@@ -47,6 +59,15 @@ tempHP.addEventListener("input", () => {
 
 takeDmgSubmit.addEventListener("click", function (e) {
   e.preventDefault();
+
+  berserkAttacksElement.textContent = 0;
+  currentHP.style.color = "white";
+
+  if (berserkAttacksElement.textContent == 0)
+    currentHP.textContent = Number(currentHP.textContent) + 18;
+  else if (berserkAttacksElement.textContent == 1)
+    currentHP.textContent = Number(currentHP.textContent) + 36;
+
   if (takeDmgInput.value == "") return;
 
   const damage = Number(takeDmgInput.value);
@@ -61,6 +82,8 @@ takeDmgSubmit.addEventListener("click", function (e) {
 });
 
 amaniRageButton.addEventListener("click", function (e) {
+  if (isRaging) return;
+
   const hp = Number(localStorage.getItem("currentHP"));
   const hpLost = Math.floor(hp / 2);
   const amaniRegenerationHP = Math.round(hpLost / 4);
@@ -74,6 +97,13 @@ amaniRageButton.addEventListener("click", function (e) {
 
   remainingHealTicks.textContent = 4;
   localStorage.setItem("remainingHealTicks", remainingHealTicks.textContent);
+
+  checkForExtraAttacks();
+
+  isRaging = true;
+  localStorage.setItem("isRaging", true);
+  AC.textContent = Number(AC.textContent) + 2;
+  localStorage.setItem("AC", AC.textContent);
 });
 
 amaniRegenSpanEl.addEventListener("input", (e) => {
@@ -85,11 +115,19 @@ addBerserkBtn.addEventListener("click", function (e) {
 
   berserkAttacksElement.textContent++;
 
+  if (currentHP.textContent == 1) return;
+
   currentHP.textContent = Number(currentHP.textContent) - 18;
+
+  // Change text color
+  if (berserkAttacksElement.textContent == 1) currentHP.style.color = "coral";
+  else if (berserkAttacksElement.textContent == 2)
+    currentHP.style.color = "red";
+
   if (currentHP.textContent <= 0) {
-    revertHp = 18 - Number(currentHP.textContent);
-    // TODO: IMPLEMENT 'REMOVING BERSERKIN' STACKS
-    // currentHP.textContent =
+    revertHp = 18 - Math.abs(Number(currentHP.textContent)) - 1;
+    currentHP.textContent = 1;
+    hpOverflow = true;
   }
 });
 
@@ -98,7 +136,19 @@ removeBerserkBtn.addEventListener("click", function (e) {
 
   berserkAttacksElement.textContent--;
 
-  currentHP.textContent = Number(currentHP.textContent) + 18;
+  // Revert text color
+  if (berserkAttacksElement.textContent == 1 && currentHP.textContent == 1)
+    currentHP.style.color = "white";
+  else if (berserkAttacksElement.textContent == 1)
+    currentHP.style.color = "coral";
+  else if (berserkAttacksElement.textContent == 0)
+    currentHP.style.color = "white";
+
+  if (hpOverflow && berserkAttacksElement.textContent == 1) {
+    currentHP.textContent = 1;
+  } else if (hpOverflow && berserkAttacksElement.textContent == 0)
+    currentHP.textContent = revertHp + 1;
+  else currentHP.textContent = Number(currentHP.textContent) + 18;
 });
 
 window.addEventListener("load", () => {
@@ -126,6 +176,6 @@ function checkForExtraAttacks() {
   localStorage.setItem("extraAttacks", extraAttacks);
 }
 
-function amaniRegen(hp) {
-  let i = 4;
+function checkForRage(count) {
+  if (count == 0) isRaging = false;
 }
