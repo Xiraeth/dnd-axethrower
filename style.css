@@ -157,17 +157,31 @@ input[type="submit"] {
 }
 
 .attackContainer {
+  height: 45px;
   width: 80%;
   margin: 10px auto 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   gap: 10px;
 }
 
 #attackBtn {
+  height: 100%;
   font-size: 2rem;
-  width: 100%;
+  width: 70%;
+}
+
+.damage {
+  color: white;
+  background: var(--bg);
+  width: 30%;
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #attackBtn,
@@ -192,7 +206,6 @@ input[type="submit"] {
 .extraAttacks {
   margin-top: 20px;
   text-align: center;
-  font-style: italic;
 }
 
 .amaniRageContainer {
@@ -205,6 +218,7 @@ input[type="submit"] {
 
 .amaniRegenHP {
   border: 1px solid black;
+  border-radius: 5px;
   background: var(--bg);
   padding: 5px 10px;
 }
