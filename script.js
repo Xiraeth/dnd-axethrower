@@ -42,6 +42,7 @@ longRestBtn.addEventListener("click", function (e) {
   localStorage.setItem("isRaging", false);
   localStorage.setItem("AC", 19);
 
+  damageElement.textContent = 13;
   totalDamage.textContent = 0;
   isRaging = false;
   remainingHealTicks.style.display = "none";
@@ -191,12 +192,17 @@ attackButton.addEventListener("click", () => {
 });
 
 endTurnButton.addEventListener("click", () => {
-  currentHP.textContent =
-    Number(currentHP.textContent) +
-    TROLL_BLOOD_REGEN +
-    Number(amaniRegenSpanEl.textContent);
-
-  if (remainingHealTicks.textContent == 1) {
+  if (Number(remainingHealTicks.textContent) > 1) {
+    currentHP.textContent =
+      Number(currentHP.textContent) +
+      TROLL_BLOOD_REGEN +
+      Number(amaniRegenSpanEl.textContent);
+    remainingHealTicks.textContent--;
+  } else if (remainingHealTicks.textContent == 1) {
+    currentHP.textContent =
+      Number(currentHP.textContent) +
+      TROLL_BLOOD_REGEN +
+      Number(amaniRegenSpanEl.textContent);
     remainingHealTicks.style.display = "none";
     remainingHealTicks.textContent--;
     amaniRegenSpanEl.textContent = 0;
@@ -205,19 +211,22 @@ endTurnButton.addEventListener("click", () => {
     localStorage.isRaging = false;
     AC.textContent = INITIAL_ARMOR_CLASS;
     localStorage.AC = INITIAL_ARMOR_CLASS;
-    localStorage.remainingHealTicks = Number(remainingHealTicks.textContent);
+  } else {
+    currentHP.textContent = Number(currentHP.textContent) + TROLL_BLOOD_REGEN;
   }
 
-  if (isRaging) {
-    remainingHealTicks.textContent--;
-    localStorage.remainingHealTicks = Number(remainingHealTicks.textContent);
+  if (berserkAttacksElement.textContent != 0) {
+    currentHP.textContent = berserkPreviousHP[0];
+    berserkAttacksElement.textContent = 0;
   }
 
-  totalDamage.textContent = 0;
+  damageElement.textContent = 13;
+  localStorage.remainingHealTicks = Number(remainingHealTicks.textContent);
 
-  if (currentHP.textContent >= localStorage.maxHP)
+  if (Number(currentHP.textContent) >= Number(localStorage.maxHP))
     currentHP.textContent = localStorage.maxHP;
 
+  totalDamage.textContent = 0;
   localStorage.currentHP = currentHP.textContent;
   flashColor(currentHP, "springgreen");
 
