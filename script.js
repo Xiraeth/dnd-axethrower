@@ -191,6 +191,11 @@ attackButton.addEventListener("click", () => {
 });
 
 endTurnButton.addEventListener("click", () => {
+  currentHP.textContent =
+    Number(currentHP.textContent) +
+    TROLL_BLOOD_REGEN +
+    Number(amaniRegenSpanEl.textContent);
+
   if (remainingHealTicks.textContent == 1) {
     remainingHealTicks.style.display = "none";
     remainingHealTicks.textContent--;
@@ -200,6 +205,7 @@ endTurnButton.addEventListener("click", () => {
     localStorage.isRaging = false;
     AC.textContent = INITIAL_ARMOR_CLASS;
     localStorage.AC = INITIAL_ARMOR_CLASS;
+    localStorage.remainingHealTicks = Number(remainingHealTicks.textContent);
   }
 
   if (isRaging) {
@@ -209,10 +215,6 @@ endTurnButton.addEventListener("click", () => {
 
   totalDamage.textContent = 0;
 
-  currentHP.textContent =
-    Number(currentHP.textContent) +
-    TROLL_BLOOD_REGEN +
-    Number(amaniRegenSpanEl.textContent);
   if (currentHP.textContent >= localStorage.maxHP)
     currentHP.textContent = localStorage.maxHP;
 
