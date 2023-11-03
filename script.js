@@ -23,6 +23,7 @@ const removeBerserkBtn = document.querySelector("#removeBerserk");
 const berserkAttacksElement = document.querySelector(".berserkinContainer div");
 const attackButton = document.querySelector("#attackBtn");
 const damageElement = document.querySelector("#damage");
+const totalDamage = document.querySelector("#totalDamage span");
 const endTurnButton = document.querySelector("#endTurn");
 
 // if amani rage is on
@@ -41,6 +42,7 @@ longRestBtn.addEventListener("click", function (e) {
   localStorage.setItem("isRaging", false);
   localStorage.setItem("AC", 19);
 
+  totalDamage.textContent = 0;
   isRaging = false;
   remainingHealTicks.style.display = "none";
   berserkAttacksElement.textContent = 0;
@@ -179,6 +181,8 @@ removeBerserkBtn.addEventListener("click", function (e) {
 });
 
 attackButton.addEventListener("click", () => {
+  totalDamage.textContent =
+    Number(totalDamage.textContent) + Number(damageElement.textContent);
   berserkAttacksElement.textContent = 0;
   damageElement.textContent = INITIAL_DAMAGE;
   currentHP.style.color = "white";
@@ -202,6 +206,8 @@ endTurnButton.addEventListener("click", () => {
     remainingHealTicks.textContent--;
     localStorage.remainingHealTicks = Number(remainingHealTicks.textContent);
   }
+
+  totalDamage.textContent = 0;
 
   currentHP.textContent =
     Number(currentHP.textContent) +

@@ -218,6 +218,19 @@ input[type="submit"]:active {
   color: black;
 }
 
+#totalDamage {
+  font-family: var(--font-1);
+  width: 80%;
+  padding: 5px 0;
+  margin: 10px auto 8px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: var(--bg);
+}
+
 .extraAttacks {
   margin-top: 20px;
   text-align: center;
@@ -249,7 +262,7 @@ input[type="submit"]:active {
 
 .endTurnContainer {
   text-align: center;
-  margin: 10px auto 0;
+  margin: 0 auto;
   width: 80%;
 }
 
