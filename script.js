@@ -85,11 +85,18 @@ takeDmgSubmit.addEventListener("click", function (e) {
   const damage = Number(takeDmgInput.value);
   const newHP = localStorage.getItem("currentHP") - damage;
 
-  localStorage.setItem("currentHP", newHP);
-  currentHP.textContent = Number(newHP);
+  if (newHP > localStorage.maxHP) {
+    currentHP.textContent = localStorage.maxHP;
+    localStorage.currentHP = localStorage.maxHP;
+  } else {
+    localStorage.setItem("currentHP", newHP);
+    currentHP.textContent = Number(newHP);
+  }
+
+  if (damage < 0) flashColor(currentHP, "springgreen");
+  else flashColor(currentHP, "crimson");
 
   checkForExtraAttacks();
-
   takeDmgInput.value = "";
 });
 
@@ -237,6 +244,8 @@ function checkForExtraAttacks() {
   else if (curr == 1) extraAttacks = 3;
 
   extraAttacksHTML.textContent = extraAttacks;
+  if (extraAttacks != localStorage.extraAttacks)
+    flashColor(extraAttacksHTML, "indigo");
   localStorage.setItem("extraAttacks", extraAttacks);
 }
 
