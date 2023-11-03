@@ -5,6 +5,7 @@ const shortRestBtn = document.querySelector("#shortRest");
 
 const STRENGTH_MOD = 9;
 const INITIAL_DAMAGE = 13;
+const INITIAL_ARMOR_CLASS = 19;
 const TROLL_BLOOD_REGEN = 10;
 
 const AC = document.querySelector(".ac span");
@@ -41,8 +42,7 @@ longRestBtn.addEventListener("click", function (e) {
   localStorage.setItem("AC", 19);
 
   isRaging = false;
-	remainingHealTicks.style.display = "none";
-	
+  remainingHealTicks.style.display = "none";
   berserkAttacksElement.textContent = 0;
   remainingHealTicks.textContent = 0;
   AC.textContent = localStorage.getItem("AC");
@@ -68,13 +68,16 @@ tempHP.addEventListener("input", () => {
 
 takeDmgSubmit.addEventListener("click", function (e) {
   e.preventDefault();
-	
-	let previousHp = localStorage.getItem("currentHP");
 
-  if (berserkAttacksElement.textContent == 1 || berserkAttacksElement.textContent == 2) currentHP.textContent = previousHp;
+  let previousHp = localStorage.getItem("currentHP");
 
+  if (
+    berserkAttacksElement.textContent == 1 ||
+    berserkAttacksElement.textContent == 2
+  )
+    currentHP.textContent = previousHp;
 
-	berserkAttacksElement.textContent = 0;
+  berserkAttacksElement.textContent = 0;
   currentHP.style.color = "white";
 
   if (takeDmgInput.value == "") return;
@@ -92,8 +95,8 @@ takeDmgSubmit.addEventListener("click", function (e) {
 
 amaniRageButton.addEventListener("click", function (e) {
   if (isRaging) return;
-	
-	remainingHealTicks.style.display = "block";
+
+  remainingHealTicks.style.display = "block";
 
   const hp = Number(localStorage.getItem("currentHP"));
   const hpLost = Math.floor(hp / 2);
@@ -125,20 +128,20 @@ addBerserkBtn.addEventListener("click", function (e) {
   if (berserkAttacksElement.textContent == 2) return;
 
   berserkAttacksElement.textContent++;
-	
-	if (berserkAttacksElement.textContent == 1) {
-		// Update array to keep track of previous hp 
-		berserkPreviousHP[0] = Number(currentHP.textContent);
-		// Change text color
-		currentHP.style.color = "coral";
-	}
-	else if (berserkAttacksElement.textContent == 2) {
-		berserkPreviousHP[1] = Number(currentHP.textContent);
-		currentHP.style.color = "red";
-	}
-	
-	// Increase damage by (strength modifier + 4) every time berserk is pressed
-	damageElement.textContent = Number(damageElement.textContent) + STRENGTH_MOD + 4;
+
+  if (berserkAttacksElement.textContent == 1) {
+    // Update array to keep track of previous hp
+    berserkPreviousHP[0] = Number(currentHP.textContent);
+    // Change text color
+    currentHP.style.color = "coral";
+  } else if (berserkAttacksElement.textContent == 2) {
+    berserkPreviousHP[1] = Number(currentHP.textContent);
+    currentHP.style.color = "red";
+  }
+
+  // Increase damage by (strength modifier + 4) every time berserk is pressed
+  damageElement.textContent =
+    Number(damageElement.textContent) + STRENGTH_MOD + 4;
 
   if (currentHP.textContent == 1) return;
 
@@ -146,7 +149,7 @@ addBerserkBtn.addEventListener("click", function (e) {
 
   if (currentHP.textContent <= 0) {
     currentHP.textContent = 1;
-  }	
+  }
 });
 
 removeBerserkBtn.addEventListener("click", function (e) {
@@ -154,45 +157,57 @@ removeBerserkBtn.addEventListener("click", function (e) {
 
   berserkAttacksElement.textContent--;
 
-	
   // Revert text color
-  if ( berserkAttacksElement.textContent == 1)
-    currentHP.style.color = "coral";
+  if (berserkAttacksElement.textContent == 1) currentHP.style.color = "coral";
   else if (berserkAttacksElement.textContent == 0)
     currentHP.style.color = "white";
-	
-	if (berserkAttacksElement.textContent == 1) currentHP.textContent = berserkPreviousHP[1];
-	else if (berserkAttacksElement.textContent == 0) currentHP.textContent = berserkPreviousHP[0];
-	
-	damageElement.textContent = Number(damageElement.textContent) - STRENGTH_MOD - 4;
+
+  if (berserkAttacksElement.textContent == 1)
+    currentHP.textContent = berserkPreviousHP[1];
+  else if (berserkAttacksElement.textContent == 0)
+    currentHP.textContent = berserkPreviousHP[0];
+
+  damageElement.textContent =
+    Number(damageElement.textContent) - STRENGTH_MOD - 4;
 });
 
 attackButton.addEventListener("click", () => {
-	berserkAttacksElement.textContent = 0;
-	damageElement.textContent = INITIAL_DAMAGE;
-	currentHP.style.color = "white";
-	localStorage.currentHP = currentHP.textContent;
-	checkForExtraAttacks();
-})
+  berserkAttacksElement.textContent = 0;
+  damageElement.textContent = INITIAL_DAMAGE;
+  currentHP.style.color = "white";
+  localStorage.currentHP = currentHP.textContent;
+  checkForExtraAttacks();
+});
 
 endTurnButton.addEventListener("click", () => {
-	if (remainingHealTicks.textContent == 1) {
-		remainingHealTicks.style.display = "none"
-		remainingHealTicks.textContent--;
-		amaniRegenSpanEl.textContent = 0;
-		localStorage.amaniRegen = 0;
-		isRaging = false;
-		localStorage.isRaging = isRaging;
-	}
-	
-	if (isRaging)	{
-		remainingHealTicks.textContent--;
-		localStorage.remainingHealTicks = Number(remainingHealTicks.textContent);
-	};
-		
-	currentHP.textContent = Number(currentHP.textContent) + TROLL_BLOOD_REGEN + Number(amaniRegenSpanEl.textContent);
-	if (currentHP.textContent >= localStorage.maxHP) currentHP.textContent = localStorage.maxHP;
-})
+  if (remainingHealTicks.textContent == 1) {
+    remainingHealTicks.style.display = "none";
+    remainingHealTicks.textContent--;
+    amaniRegenSpanEl.textContent = 0;
+    localStorage.amaniRegen = 0;
+    isRaging = false;
+    localStorage.isRaging = false;
+    AC.textContent = INITIAL_ARMOR_CLASS;
+    localStorage.AC = INITIAL_ARMOR_CLASS;
+  }
+
+  if (isRaging) {
+    remainingHealTicks.textContent--;
+    localStorage.remainingHealTicks = Number(remainingHealTicks.textContent);
+  }
+
+  currentHP.textContent =
+    Number(currentHP.textContent) +
+    TROLL_BLOOD_REGEN +
+    Number(amaniRegenSpanEl.textContent);
+  if (currentHP.textContent >= localStorage.maxHP)
+    currentHP.textContent = localStorage.maxHP;
+
+  localStorage.currentHP = currentHP.textContent;
+  flashColor(currentHP, "springgreen");
+
+  checkForExtraAttacks();
+});
 
 window.addEventListener("load", () => {
   tempHP.textContent = localStorage.getItem("tempHP");
@@ -200,13 +215,13 @@ window.addEventListener("load", () => {
   currentHP.textContent = localStorage.getItem("currentHP");
   amaniRegenSpanEl.textContent = localStorage.getItem("amaniRegen");
   remainingHealTicks.textContent = localStorage.getItem("remainingHealTicks");
-	AC.textContent = localStorage.getItem("AC");
-	isRaging = localStorage.isRaging;
-	
-	if (remainingHealTicks.textContent <= 0) {
-		remainingHealTicks.style.display = "none"
-	}
-	
+  AC.textContent = localStorage.getItem("AC");
+  isRaging = localStorage.getItem("isRaging") === "true";
+
+  if (remainingHealTicks.textContent <= 0) {
+    remainingHealTicks.style.display = "none";
+  }
+
   checkForExtraAttacks();
   extraAttacksHTML.textContent = localStorage.getItem("extraAttacks");
 });
@@ -227,4 +242,11 @@ function checkForExtraAttacks() {
 
 function checkForRage(count) {
   if (count == 0) isRaging = false;
+}
+
+function flashColor(element, color) {
+  element.style.color = color;
+  setTimeout(() => {
+    element.style.color = "white";
+  }, 300);
 }
