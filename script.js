@@ -3,6 +3,10 @@
 const longRestBtn = document.querySelector("#longRest");
 const shortRestBtn = document.querySelector("#shortRest");
 
+const STRENGTH_MOD = 9;
+const INITIAL_DAMAGE = 13;
+const TROLL_BLOOD_REGEN = 10;
+
 const AC = document.querySelector(".ac span");
 const maxHP = document.querySelector(".maximumHP span");
 const currentHP = document.querySelector(".currentHP span");
@@ -16,10 +20,15 @@ const remainingHealTicks = document.querySelector(".remainingHealTicks");
 const addBerserkBtn = document.querySelector("#berserk");
 const removeBerserkBtn = document.querySelector("#removeBerserk");
 const berserkAttacksElement = document.querySelector(".berserkinContainer div");
-// variable to keep track of how much beneath 1hp 'berserkin' took me
-let revertHp = 0;
-let hpOverflow = false;
+const attackButton = document.querySelector("#attackBtn");
+const damageElement = document.querySelector("#damage");
+const endTurnButton = document.querySelector("#endTurn");
+
+// if amani rage is on
 let isRaging = false;
+
+// variable to keep track of hp changes when using berserk
+const berserkPreviousHP = [];
 
 // localStorage.clear();
 
@@ -32,8 +41,8 @@ longRestBtn.addEventListener("click", function (e) {
   localStorage.setItem("AC", 19);
 
   isRaging = false;
-  hpOverflow = false;
-  revertHp = 0;
+	remainingHealTicks.style.display = "none";
+	
   berserkAttacksElement.textContent = 0;
   remainingHealTicks.textContent = 0;
   AC.textContent = localStorage.getItem("AC");
@@ -59,14 +68,14 @@ tempHP.addEventListener("input", () => {
 
 takeDmgSubmit.addEventListener("click", function (e) {
   e.preventDefault();
+	
+	let previousHp = localStorage.getItem("currentHP");
 
-  berserkAttacksElement.textContent = 0;
+  if (berserkAttacksElement.textContent == 1 || berserkAttacksElement.textContent == 2) currentHP.textContent = previousHp;
+
+
+	berserkAttacksElement.textContent = 0;
   currentHP.style.color = "white";
-
-  if (berserkAttacksElement.textContent == 0)
-    currentHP.textContent = Number(currentHP.textContent) + 18;
-  else if (berserkAttacksElement.textContent == 1)
-    currentHP.textContent = Number(currentHP.textContent) + 36;
 
   if (takeDmgInput.value == "") return;
 
@@ -74,7 +83,7 @@ takeDmgSubmit.addEventListener("click", function (e) {
   const newHP = localStorage.getItem("currentHP") - damage;
 
   localStorage.setItem("currentHP", newHP);
-  currentHP.textContent = localStorage.getItem("currentHP");
+  currentHP.textContent = Number(newHP);
 
   checkForExtraAttacks();
 
@@ -83,6 +92,8 @@ takeDmgSubmit.addEventListener("click", function (e) {
 
 amaniRageButton.addEventListener("click", function (e) {
   if (isRaging) return;
+	
+	remainingHealTicks.style.display = "block";
 
   const hp = Number(localStorage.getItem("currentHP"));
   const hpLost = Math.floor(hp / 2);
@@ -114,21 +125,28 @@ addBerserkBtn.addEventListener("click", function (e) {
   if (berserkAttacksElement.textContent == 2) return;
 
   berserkAttacksElement.textContent++;
+	
+	if (berserkAttacksElement.textContent == 1) {
+		// Update array to keep track of previous hp 
+		berserkPreviousHP[0] = Number(currentHP.textContent);
+		// Change text color
+		currentHP.style.color = "coral";
+	}
+	else if (berserkAttacksElement.textContent == 2) {
+		berserkPreviousHP[1] = Number(currentHP.textContent);
+		currentHP.style.color = "red";
+	}
+	
+	// Increase damage by (strength modifier + 4) every time berserk is pressed
+	damageElement.textContent = Number(damageElement.textContent) + STRENGTH_MOD + 4;
 
   if (currentHP.textContent == 1) return;
 
   currentHP.textContent = Number(currentHP.textContent) - 18;
 
-  // Change text color
-  if (berserkAttacksElement.textContent == 1) currentHP.style.color = "coral";
-  else if (berserkAttacksElement.textContent == 2)
-    currentHP.style.color = "red";
-
   if (currentHP.textContent <= 0) {
-    revertHp = 18 - Math.abs(Number(currentHP.textContent)) - 1;
     currentHP.textContent = 1;
-    hpOverflow = true;
-  }
+  }	
 });
 
 removeBerserkBtn.addEventListener("click", function (e) {
@@ -136,20 +154,45 @@ removeBerserkBtn.addEventListener("click", function (e) {
 
   berserkAttacksElement.textContent--;
 
+	
   // Revert text color
-  if (berserkAttacksElement.textContent == 1 && currentHP.textContent == 1)
-    currentHP.style.color = "white";
-  else if (berserkAttacksElement.textContent == 1)
+  if ( berserkAttacksElement.textContent == 1)
     currentHP.style.color = "coral";
   else if (berserkAttacksElement.textContent == 0)
     currentHP.style.color = "white";
-
-  if (hpOverflow && berserkAttacksElement.textContent == 1) {
-    currentHP.textContent = 1;
-  } else if (hpOverflow && berserkAttacksElement.textContent == 0)
-    currentHP.textContent = revertHp + 1;
-  else currentHP.textContent = Number(currentHP.textContent) + 18;
+	
+	if (berserkAttacksElement.textContent == 1) currentHP.textContent = berserkPreviousHP[1];
+	else if (berserkAttacksElement.textContent == 0) currentHP.textContent = berserkPreviousHP[0];
+	
+	damageElement.textContent = Number(damageElement.textContent) - STRENGTH_MOD - 4;
 });
+
+attackButton.addEventListener("click", () => {
+	berserkAttacksElement.textContent = 0;
+	damageElement.textContent = INITIAL_DAMAGE;
+	currentHP.style.color = "white";
+	localStorage.currentHP = currentHP.textContent;
+	checkForExtraAttacks();
+})
+
+endTurnButton.addEventListener("click", () => {
+	if (remainingHealTicks.textContent == 1) {
+		remainingHealTicks.style.display = "none"
+		remainingHealTicks.textContent--;
+		amaniRegenSpanEl.textContent = 0;
+		localStorage.amaniRegen = 0;
+		isRaging = false;
+		localStorage.isRaging = isRaging;
+	}
+	
+	if (isRaging)	{
+		remainingHealTicks.textContent--;
+		localStorage.remainingHealTicks = Number(remainingHealTicks.textContent);
+	};
+		
+	currentHP.textContent = Number(currentHP.textContent) + TROLL_BLOOD_REGEN + Number(amaniRegenSpanEl.textContent);
+	if (currentHP.textContent >= localStorage.maxHP) currentHP.textContent = localStorage.maxHP;
+})
 
 window.addEventListener("load", () => {
   tempHP.textContent = localStorage.getItem("tempHP");
@@ -157,7 +200,13 @@ window.addEventListener("load", () => {
   currentHP.textContent = localStorage.getItem("currentHP");
   amaniRegenSpanEl.textContent = localStorage.getItem("amaniRegen");
   remainingHealTicks.textContent = localStorage.getItem("remainingHealTicks");
-
+	AC.textContent = localStorage.getItem("AC");
+	isRaging = localStorage.isRaging;
+	
+	if (remainingHealTicks.textContent <= 0) {
+		remainingHealTicks.style.display = "none"
+	}
+	
   checkForExtraAttacks();
   extraAttacksHTML.textContent = localStorage.getItem("extraAttacks");
 });

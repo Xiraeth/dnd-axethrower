@@ -182,7 +182,7 @@ input[type="submit"]:active {
   width: 70%;
 }
 
-.damage {
+#damage {
   color: white;
   background: var(--bg);
   width: 30%;
