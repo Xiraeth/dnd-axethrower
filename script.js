@@ -255,10 +255,10 @@ function checkForExtraAttacks() {
   const max = localStorage.getItem("maxHP");
   let extraAttacks = 0;
 
-  if (curr > 0.75 * max) extraAttacks = 0;
-  else if (curr <= 0.75 * max && curr > 0.5 * max) extraAttacks = 1;
-  else if (curr <= 0.5 * max && curr > 1) extraAttacks = 2;
-  else if (curr == 1) extraAttacks = 3;
+  if (curr < max && curr >= 0.75 * max) extraAttacks = 1;
+  else if (curr < 0.75 * max && curr >= 0.5 * max) extraAttacks = 2;
+  else if (curr < 0.5 * max && curr >= 0.25 * max) extraAttacks = 3;
+  else if (curr < 0.25 * max) extraAttacks = 4;
 
   extraAttacksHTML.textContent = extraAttacks;
   if (extraAttacks != localStorage.extraAttacks)
