@@ -172,7 +172,7 @@ input[type="submit"]:active {
 }
 
 .attackContainer,
-.grievousThrow  {
+.grievousThrow {
   height: 45px;
   width: 80%;
   margin: 10px auto 0;
@@ -182,19 +182,19 @@ input[type="submit"]:active {
   gap: 10px;
 }
 
-#grievousDamage {
-	color: crimson;
-	background: black;
-	border: 1px solid crimson;
-	padding: 10px 15px;
-	border-radius: 5px;
-	font-size: 1rem;
-	transition: all 0.05s;
+.grievousDamage {
+  color: crimson;
+  background: black;
+  border: 1px solid crimson;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: all 0.05s;
 }
 
-.activated:active{
-	color: black;
-	background: crimson;
+.activated:active {
+  color: black;
+  background: crimson;
 }
 
 #attackBtn {
@@ -204,11 +204,11 @@ input[type="submit"]:active {
 }
 
 #grievousCount {
-	color: coral;
+  color: coral;
 }
 
 #damage {
-	color: white;
+  color: white;
 }
 
 #damage,
