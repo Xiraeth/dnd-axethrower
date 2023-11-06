@@ -25,6 +25,8 @@ const attackButton = document.querySelector("#attackBtn");
 const damageElement = document.querySelector("#damage");
 const totalDamage = document.querySelector("#totalDamage span");
 const endTurnButton = document.querySelector("#endTurn");
+const grievousCount = document.querySelector("#grievousCount");
+const grievousThrowBtn = document.querySelector("#grievousDamage");
 
 // if amani rage is on
 let isRaging = false;
@@ -41,7 +43,11 @@ longRestBtn.addEventListener("click", function (e) {
   localStorage.setItem("remainingHealTicks", 0);
   localStorage.setItem("isRaging", false);
   localStorage.setItem("AC", 19);
+	localStorage.setItem("grievousCount", 0);
 
+	totalDamage.textContent = 0;
+	grievousCount.textContent = 0;
+	grievouSCount.style.color = "coral";
   damageElement.textContent = 13;
   totalDamage.textContent = 0;
   isRaging = false;
@@ -188,8 +194,18 @@ attackButton.addEventListener("click", () => {
   damageElement.textContent = INITIAL_DAMAGE;
   currentHP.style.color = "white";
   localStorage.currentHP = currentHP.textContent;
+	grievousCount.textContent = Number(grievousCount.textContent) + 1;
+	if(grievousCount.textContent > 4) {
+		grievousCount.textContent = 4;
+		grievousCount.style.color = "mediumspringgreen";
+	}
+	localStorage.setItem("grievousCount", grievousCount.textContent);
   checkForExtraAttacks();
 });
+
+grievousThrowBtn.addEventListener("click", e => {
+	totalDamage.textContent = Math.floor(Number(totalDamage.textContent) + Number(totalDamage.textContent) * 1/2);
+})
 
 endTurnButton.addEventListener("click", () => {
   if (Number(remainingHealTicks.textContent) > 1) {
@@ -241,6 +257,7 @@ window.addEventListener("load", () => {
   remainingHealTicks.textContent = localStorage.getItem("remainingHealTicks");
   AC.textContent = localStorage.getItem("AC");
   isRaging = localStorage.getItem("isRaging") === "true";
+	grievousCount.textContent = localStorage.getItem("grievousCount");
 
   if (remainingHealTicks.textContent <= 0) {
     remainingHealTicks.style.display = "none";
